@@ -32,7 +32,8 @@ const CreateAccount = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [vaiTro, setVaiTro] = useState('');
-
+  const [successMessage, setSuccessMessage] = useState('');
+  
   const history = useHistory();
 
   const handleSubmit = async (e) => {
@@ -40,9 +41,9 @@ const CreateAccount = () => {
     
     try {
       const response = await axios.post('http://localhost:5000/create-account', {
-        username,
+        data:{username,
         password,
-        vaiTro,
+        vaiTro}
       });
       
       console.log(response.data); // Kết quả từ API
@@ -51,6 +52,12 @@ const CreateAccount = () => {
       setUsername('');
       setPassword('');
       setVaiTro('');
+      
+      // Hiển thị thông báo thành công
+      setSuccessMessage('Tạo tài khoản thành công!');
+      
+      // Chuyển hướng sau khi tạo tài khoản thành công (ví dụ: trang danh sách tài khoản)
+      history.push('/account-list');
     } catch (error) {
       console.error(error);
     }
@@ -62,13 +69,14 @@ const CreateAccount = () => {
 
   return (
     <div>
-            <div style={{display:'flex',flexDirection:'row'}}>
-            
-            <button onClick={handleGoBack} className="back-button" style={{marginLeft:'20px',marginRight:'20px'}}>
-                <FaArrowLeft  /> 
-            </button>
-            <h4>Tạo tài khoản</h4>
-        </div>
+      <div style={{display:'flex',flexDirection:'row'}}>
+        <button onClick={handleGoBack} className="back-button" style={{marginLeft:'20px',marginRight:'20px'}}>
+          <FaArrowLeft  /> 
+        </button>
+        <h4>Tạo tài khoản</h4>
+      </div>
+
+      {successMessage && <div className="success-message">{successMessage}</div>}
 
       <form onSubmit={handleSubmit}>
         <FloatLabelInput
@@ -87,6 +95,7 @@ const CreateAccount = () => {
           value={vaiTro}
           onChange={(e) => setVaiTro(e.target.value)}
         />
+
         <button type="submit">Tạo</button>
       </form>
     </div>

@@ -8,18 +8,25 @@ const ManageAccounts = () => {
   const [confirmDelete, setConfirmDelete] = useState(false); // Trạng thái xác nhận xóa
   const [accountIdToDelete, setAccountIdToDelete] = useState(''); // ID của tài khoản cần xóa
   const history = useHistory();
-
+  const [isLoading,setIsLoading] = useState(true);
+  const fetchData = async () => {
+    
+    try {
+      
+      setIsLoading(true);
+      console.log("den fatchApi");
+      const response = await axios.get('http://localhost:5000/read-list-account');
+      let data = response.json();
+      
+      console.log(data.data);
+      setAccountList(data.data);
+      
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/read-list-account');
-        console.log(response.data);
-        setAccountList(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -41,7 +48,11 @@ const ManageAccounts = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:5000/delete-account`);
+      const response = await axios.post(`http://localhost:5000/delete-account`,{
+        data:{
+          id:accountIdToDelete
+        }
+      });
       console.log(response.data); // Kết quả từ API
 
       // Xóa tài khoản khỏi danh sách
@@ -109,7 +120,7 @@ const ManageAccounts = () => {
           paddingRight: '32px',
         }}
       >
-        {accountList.length > 0 ? (
+       
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
@@ -121,7 +132,8 @@ const ManageAccounts = () => {
               </tr>
             </thead>
             <tbody>
-              {accountList.map((account, index) => (
+              {isLoading ? "loading" : accountList.data.map((account, index) => (
+
                 <tr key={index}>
                   <td style={tableCellStyle}>{index + 1}</td>
                   <td style={tableCellStyle}>{account.userName}</td>
@@ -135,9 +147,9 @@ const ManageAccounts = () => {
               ))}
             </tbody>
           </table>
-        ) : (
-          <p>Không có dữ liệu tài khoản.</p>
-        )}
+    
+         
+        
       </div>
 
       {confirmDelete && (
