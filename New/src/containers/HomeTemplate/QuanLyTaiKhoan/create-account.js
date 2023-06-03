@@ -68,38 +68,76 @@ const CreateAccount = () => {
   };
 
   return (
-    <div>
+    <div style={{marginLeft:20,marginRight:20}}>
       <div style={{display:'flex',flexDirection:'row'}}>
-        <button onClick={handleGoBack} className="back-button" style={{marginLeft:'20px',marginRight:'20px'}}>
+        <button onClick={handleGoBack} className="back-button">
           <FaArrowLeft  /> 
         </button>
         <h4>Tạo tài khoản</h4>
       </div>
 
       {successMessage && <div className="success-message">{successMessage}</div>}
+    <div style={{position:'relative',display:'flex',justifyContent:'center',flexDirection:'column'
+      ,alignItems:'center',width:'100%'}}>
+      <form onSubmit={handleSubmit} >
+      <label htmlFor='username'>Tên tài khoản</label>
+       <div style={inputFeild} id='username'>
+                   
+                      <input
+                       style={inputType}
+                        type="text"
+                        name="userName"
+                        placeholder="Tên tài khoản"
+                      ></input>
+                    </div>
 
-      <form onSubmit={handleSubmit}>
-        <FloatLabelInput
-          label="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{ border: '1px solid #000000' }}
-        />
-        <FloatLabelInput
-          label="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <FloatLabelInput
-          label="Vai trò"
-          value={vaiTro}
-          onChange={(e) => setVaiTro(e.target.value)}
-        />
-
-        <button type="submit">Tạo</button>
+                    <label htmlFor='username'>Mật khẩu:</label>
+       <div style={inputFeild} id='password'>
+                   
+                      <input
+                       style={inputType}
+                        type="text"
+                        name="passWord"
+                        placeholder="Mật khẩu"
+                      ></input>
+                    </div>
+                    <label htmlFor='username'>Vai trò</label>
+       <div style={inputFeild} id='vaitro'>
+                   
+                      <input
+                       style={inputType}
+                        type="text"
+                        name="vaitro"
+                        placeholder="Vai trò"
+                      ></input>
+                    </div>
       </form>
+     
+      </div>
+      <div style={{marginTop:20}}>
+      <button type="submit" style={{position:'absolute',right:20,borderRadius:'1 solid black'}}>Tạo</button>
+      </div>
     </div>
   );
 };
+const inputFeild ={
+  width: "100%",
+  height: 40,
+  display: "flex",
+  backgroundColor: "#f0f0f0",
+  borderRadius: 20,
+  alignItems: "center",
+  padding: "0 8px",
+};
+const inputType ={
+  border: "none",
+      outline: "none",
+      backgroundColor: "#f0f0f0",
+      color: "#500",
+      fontSize: "16px",
+      fontWeight: "600",
+      width: "100%",
+      borderRadius: "20px",
+      padding: "10px",}
 
 export default CreateAccount;
